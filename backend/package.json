@@ -1,0 +1,17 @@
+{
+  "name": "pawan-games-realtime-server",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Realtime multiplayer backend foundation for Pawan Games",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "ws": "^8.18.3"
+  }
+}
