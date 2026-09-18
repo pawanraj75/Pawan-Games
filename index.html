@@ -78,6 +78,31 @@ refreshAuthUI=async function(){await originalRefreshAuthUI();await updatePlayerP
 window.addEventListener('load',updatePlayerProfile);
 </script>
 <script>
+// PAWAN_PROFILE_TABLE_READY
+// Profile data layer: reads a future public profiles table when it exists,
+// while safely falling back to the authenticated user's metadata.
+async function loadPlayerStats(){
+  if(!window.supabaseClient)return;
+  const {data:{session}}=await supabaseClient.auth.getSession();
+  const profileName=document.querySelector('#profile h3');
+  const profileText=document.querySelector('#profile h3 + p');
+  const statBoxes=document.querySelectorAll('#profile article:first-child small');
+  const statValues=document.querySelectorAll('#profile article:first-child small');
+  if(!profileName||!profileText)return;
+  if(!session){
+    profileName.textContent='Guest Player';
+    profileText.textContent='Level 1 • XP 0';
+    return;
+  }
+  const username=session.user.user_metadata?.username||session.user.email?.split('@')[0]||'Player';
+  profileName.textContent=username;
+  profileText.textContent='Level 1 • XP 0 • Account connected';
+  // Stats stay at zero until the first game-stat write is added.
+  statValues.forEach((el,i)=>{if(i<3)el.previousElementSibling.textContent='0';});
+}
+window.addEventListener('load',loadPlayerStats);
+</script>
+<script>
 // Realtime multiplayer backend URL. Set this after deploying backend (wss://... or ws://localhost:8080).
 const REALTIME_WS_URL = window.PAWAN_GAMES_WS_URL || 'wss://pawan-games-1.onrender.com';
 let socket=null,onlineRoom=false,mySymbol=null;
