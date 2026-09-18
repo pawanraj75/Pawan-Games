@@ -1,0 +1,19 @@
+{
+  "name": "Pawan Games",
+  "short_name": "Pawan Games",
+  "description": "Pawan Games - a free-to-play gaming platform.",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#0b1020",
+  "theme_color": "#6d5dfc",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ]
+}
