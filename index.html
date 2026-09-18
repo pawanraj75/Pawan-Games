@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#6d5dfc"><meta name="description" content="Pawan Games - a free-to-play multiplayer gaming platform.">
+<meta name="theme-color" content="#6d5dfc"><link rel="manifest" href="./manifest.webmanifest"><meta name="description" content="Pawan Games - a free-to-play multiplayer gaming platform.">
 <title>Pawan Games</title>
 <style>
 :root{--bg:#0b1020;--card:#151c33;--text:#f7f8ff;--muted:#aab3cf;--primary:#6d5dfc;--primary2:#8b7fff;--line:#2a3557}
@@ -34,4 +34,4 @@ function closeGame(){document.getElementById('gamePanel').classList.remove('show
 function createRoom(){const code='PW'+Math.random().toString(36).slice(2,6).toUpperCase();document.getElementById('roomCode').value=code;alert('Room code created: '+code+'\nRealtime online multiplayer will be connected in the next build.')}
 function joinRoom(){const c=document.getElementById('roomCode').value.trim();if(!c)return alert('Enter a room code first.');alert('Room '+c+' selected. The realtime backend is the next development step.')}
 function comingSoon(){alert('This feature is planned for the next development phase.')}
-</script></body></html>
+</script>\n<script>if ("serviceWorker" in navigator) { window.addEventListener("load", () => navigator.serviceWorker.register("./sw.js").catch(() => {})); }</script></body></html>
