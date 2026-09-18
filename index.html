@@ -39,7 +39,7 @@ button,input{font:inherit}button{cursor:pointer;border:0}.nav{height:70px;displa
 </main><footer class="footer">© 2026 Pawan Games • Free-to-play MVP • Built step by step</footer>
 <script>
 // Realtime multiplayer backend URL. Set this after deploying backend (wss://... or ws://localhost:8080).
-const REALTIME_WS_URL = window.PAWAN_GAMES_WS_URL || '';
+const REALTIME_WS_URL = window.PAWAN_GAMES_WS_URL || 'wss://pawan-games-1.onrender.com';
 let socket=null,onlineRoom=false,mySymbol=null;
 let cells=Array(9).fill(''),turn='X',gameOver=false,sx=0,so=0,sd=0;
 const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
