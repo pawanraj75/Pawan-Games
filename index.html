@@ -32,7 +32,7 @@ button,input{font:inherit}button{cursor:pointer;border:0}.nav{height:70px;displa
 <article class="game"><div class="gameicon">🌐</div><h3>Live Multiplayer</h3><p>Realtime game rooms let players connect across different devices.</p></article>
 <article class="game"><div class="gameicon">👥</div><h3>Players & Friends</h3><p>Profiles, friends, XP, achievements and leaderboards are part of the platform roadmap.</p></article>
 </div></section>
-<section class="section" id="profile"><h2>Player Profile</h2><p class="sub">A preview of the player system planned for Pawan Games.</p><div class="games">
+<section class="section" id="profile"><h2>Player Profile</h2><p class="sub">Your Pawan Games player profile, connected to your account.</p><div class="games">
 <article class="game"><div style="display:flex;align-items:center;gap:14px"><div class="logo" style="width:56px;height:56px">🎮</div><div><h3 style="margin:0">Guest Player</h3><p style="margin:4px 0">Level 1 • XP 0</p></div></div><div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:18px"><div style="background:#0d1428;border:1px solid var(--line);padding:12px;border-radius:12px;text-align:center"><b>0</b><small style="display:block;color:var(--muted)">Games</small></div><div style="background:#0d1428;border:1px solid var(--line);padding:12px;border-radius:12px;text-align:center"><b>0</b><small style="display:block;color:var(--muted)">Wins</small></div><div style="background:#0d1428;border:1px solid var(--line);padding:12px;border-radius:12px;text-align:center"><b>0</b><small style="display:block;color:var(--muted)">Friends</small></div></div></article>
 <article class="game"><div class="gameicon">🏅</div><h3>Achievements</h3><p>Badges and XP milestones will be stored with a real player account after backend authentication is connected.</p><span class="tag">PLANNED</span></article>
 <article class="game"><div class="gameicon">👥</div><h3>Friends</h3><p>Future player profiles will support friend requests, presence and safe game-room invitations.</p><span class="tag">PLANNED</span></article>
@@ -53,6 +53,29 @@ async function authSubmit(){const email=document.getElementById("authEmail").val
 async function logoutUser(){await supabaseClient.auth.signOut();await refreshAuthUI();document.getElementById("authNote").textContent="You have been logged out."}
 supabaseClient.auth.onAuthStateChange(()=>refreshAuthUI());
 window.addEventListener("load",refreshAuthUI);
+</script>
+<script>
+async function updatePlayerProfile(){
+  const {data:{session}}=await supabaseClient.auth.getSession();
+  const profileName=document.querySelector('#profile h3');
+  const profileText=document.querySelector('#profile h3 + p');
+  const profileSection=document.querySelector('#profile');
+  if(!profileName||!profileText||!profileSection)return;
+  const cards=profileSection.querySelectorAll('.game');
+  if(session){
+    const username=session.user.user_metadata?.username||session.user.email?.split('@')[0]||'Player';
+    profileName.textContent=username;
+    profileText.textContent='Level 1 • XP 0 • Online account';
+    if(cards[1])cards[1].querySelector('p').textContent='Your achievements will appear here as games and milestones are added.';
+    if(cards[2])cards[2].querySelector('p').textContent='Friends and game invitations will be connected in the next multiplayer phase.';
+  }else{
+    profileName.textContent='Guest Player';
+    profileText.textContent='Level 1 • XP 0';
+  }
+}
+const originalRefreshAuthUI=refreshAuthUI;
+refreshAuthUI=async function(){await originalRefreshAuthUI();await updatePlayerProfile();};
+window.addEventListener('load',updatePlayerProfile);
 </script>
 <script>
 // Realtime multiplayer backend URL. Set this after deploying backend (wss://... or ws://localhost:8080).
