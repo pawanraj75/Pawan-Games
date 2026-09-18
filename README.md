@@ -7,6 +7,10 @@ Free-to-play online multiplayer gaming platform.
 - Tic-Tac-Toe playable in the browser
 - Game-room UI with room-code generation/join flow
 - Mobile-friendly dark gaming UI
+- Installable PWA foundation with web app manifest, service worker and app icon
+
+## Development status
+The frontend foundation is ready. The room-code controls are currently a UI/demo flow and do **not** create a real online room yet.
 
 ## Next development phases
 1. Realtime multiplayer backend and persistent game rooms
@@ -16,4 +20,4 @@ Free-to-play online multiplayer gaming platform.
 5. Additional games
 6. Production security, moderation and deployment
 
-> The current room-code UI is a frontend placeholder; realtime multiplayer will be connected after the backend is implemented.
+> Real-time multiplayer requires a backend/service capable of keeping rooms and game state synchronized between players. GitHub Pages can host the frontend, but it does not run that server-side game logic.
