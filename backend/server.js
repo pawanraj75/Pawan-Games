@@ -47,9 +47,60 @@ function leave(ws) {
   ws.roomId = null;
 }
 
+const path = require("path");
+const fs = require("fs");
+
+const frontendRoot = path.resolve(__dirname, "..");
+const mimeTypes = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "application/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".webmanifest": "application/manifest+json; charset=utf-8",
+  ".svg": "image/svg+xml",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".ico": "image/x-icon",
+};
+
+function serveFrontend(req, res) {
+  const requestPath = decodeURIComponent((req.url || "/").split("?")[0]);
+  const relativePath = requestPath === "/" ? "index.html" : requestPath.replace(/^\/+/, "");
+  const filePath = path.resolve(frontendRoot, relativePath);
+
+  // Prevent requests from escaping the repository root.
+  if (filePath !== frontendRoot && !filePath.startsWith(frontendRoot + path.sep)) {
+    res.writeHead(403, {"content-type": "text/plain; charset=utf-8"});
+    res.end("Forbidden");
+    return;
+  }
+
+  fs.stat(filePath, (statErr, stat) => {
+    if (!statErr && stat.isFile()) {
+      const ext = path.extname(filePath).toLowerCase();
+      res.writeHead(200, {
+        "content-type": mimeTypes[ext] || "application/octet-stream",
+        "cache-control": requestPath === "/" ? "no-cache" : "public, max-age=300",
+      });
+      fs.createReadStream(filePath).pipe(res);
+      return;
+    }
+
+    // Keep a simple JSON health response available at /health.
+    if (requestPath === "/health") {
+      res.writeHead(200, {"content-type": "application/json; charset=utf-8"});
+      res.end(JSON.stringify({ service: "Pawan Games realtime server", status: "ok" }));
+      return;
+    }
+
+    res.writeHead(404, {"content-type": "text/plain; charset=utf-8"});
+    res.end("Not found");
+  });
+}
+
 const server = http.createServer((req,res) => {
-  res.writeHead(200, {"content-type":"application/json"});
-  res.end(JSON.stringify({ service:"Pawan Games realtime server", status:"ok" }));
+  serveFrontend(req, res);
 });
 
 const wss = new WebSocket.Server({ server });
