@@ -1,4 +1,4 @@
-const CACHE_NAME = "pawan-games-v2";
+const CACHE_NAME = "pawan-games-v3";
 const APP_SHELL = [
   "./",
   "./index.html",
