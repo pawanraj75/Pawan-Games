@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="theme-color" content="#6d5dfc"><link rel="manifest" href="./manifest.webmanifest"><meta name="description" content="Pawan Games - a free-to-play multiplayer gaming platform.">
+<meta name="theme-color" content="#020617"><link rel="manifest" href="./manifest.webmanifest"><meta name="description" content="Pawan Games - a free-to-play multiplayer gaming platform.">
 <title>Pawan Games</title>
 <style>
 :root{--bg:#07111f;--card:#0d1b2f;--card2:#102744;--text:#f7fbff;--muted:#9db1c9;--primary:#00b7ff;--primary2:#6d5dfc;--accent:#ff4fd8;--line:#254567}
@@ -72,6 +72,43 @@ html body:after{content:""!important;display:block!important;position:fixed!impo
 .panel,.chess-mode-box{background:linear-gradient(145deg,#0b1c33,#030b18)!important;border-color:rgba(0,229,255,.25)!important;box-shadow:0 30px 100px rgba(0,0,0,.75)!important}
 .section h2{ text-shadow:0 0 22px rgba(0,229,255,.16)!important}
 .footer{background:#01040a!important;border-top-color:rgba(0,229,255,.15)!important}
+</style><style id="pawan-dashboard-v4">
+/* Screenshot-inspired Pawan Games dashboard: responsive HTML/CSS so controls remain real buttons. */
+.pawan-dashboard{max-width:1480px;margin:0 auto;padding:28px 5% 34px;display:grid;grid-template-columns:190px minmax(0,1fr) 285px;gap:18px;position:relative}
+.pawan-dashboard:before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(circle at 45% 25%,#00e5ff12,transparent 30%),radial-gradient(circle at 80% 20%,#7c3cff15,transparent 28%);z-index:-1}
+.pd-sidebar,.pd-card{background:linear-gradient(145deg,#07182be8,#040b16f5);border:1px solid #1b5680;border-radius:18px;box-shadow:0 16px 50px #0008,inset 0 1px #ffffff0b;backdrop-filter:blur(16px)}
+.pd-sidebar{padding:12px;height:max-content;position:sticky;top:92px}
+.pd-mini-brand{display:flex;align-items:center;gap:9px;padding:8px 7px 14px;border-bottom:1px solid #ffffff0e;margin-bottom:10px}
+.pd-mini-logo{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;background:linear-gradient(135deg,#00e5ff,#7c3cff 60%,#ff2bd6);box-shadow:0 0 24px #00e5ff44}
+.pd-mini-brand b{font-size:14px;letter-spacing:.5px}.pd-mini-brand small{display:block;color:#00e5ff;font-size:8px;letter-spacing:1px}
+.pd-side-btn{width:100%;display:flex;align-items:center;gap:10px;padding:11px 10px;margin:3px 0;border-radius:10px;background:transparent;color:#a9c5df;border:1px solid transparent;text-align:left;font-size:12px;font-weight:800}
+.pd-side-btn:hover,.pd-side-btn.active{background:linear-gradient(90deg,#00e5ff18,#7c3cff18);color:#fff;border-color:#00e5ff55;box-shadow:0 0 18px #00e5ff12}
+.pd-upgrade{margin-top:16px;padding:14px;border:1px solid #7c3cff55;border-radius:14px;background:linear-gradient(145deg,#0c1731,#08101f);text-align:center}
+.pd-upgrade .big{font-size:28px}.pd-upgrade b{display:block;font-size:11px}.pd-upgrade small{color:#7f9ab6;font-size:9px}
+.pd-main{min-width:0}
+.pd-topline{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.pd-search{flex:1;max-width:600px;background:#061426d9;border:1px solid #1b5680;border-radius:12px;padding:11px 14px;color:#fff;outline:none;box-shadow:inset 0 1px #ffffff08}
+.pd-search::placeholder{color:#6f8aa6}
+.pd-user{display:flex;align-items:center;gap:9px;background:#061426;border:1px solid #1b5680;border-radius:12px;padding:7px 10px}
+.pd-avatar{width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#00e5ff,#7c3cff);font-size:17px}
+.pd-user b{font-size:11px}.pd-user small{display:block;color:#00d9ff;font-size:8px}
+.pd-hero{min-height:210px;border-radius:18px;border:1px solid #1b6b9c;overflow:hidden;position:relative;padding:28px;display:flex;align-items:center;background:radial-gradient(circle at 15% 45%,#00e5ff2b,transparent 27%),radial-gradient(circle at 90% 20%,#7c3cff3a,transparent 30%),linear-gradient(135deg,#071d35,#09102a 52%,#17092a)}
+.pd-hero:after{content:"";position:absolute;inset:0;background-image:linear-gradient(#00e5ff08 1px,transparent 1px),linear-gradient(90deg,#00e5ff08 1px,transparent 1px);background-size:26px 26px;mask-image:linear-gradient(90deg,black,transparent 88%)}
+.pd-hero-content{position:relative;z-index:1;max-width:620px}.pd-hero-kicker{color:#00e5ff;font-weight:900;font-size:10px;letter-spacing:2px}.pd-hero h2{font-size:clamp(26px,4vw,42px);margin:8px 0 8px;line-height:1.02}.pd-hero p{color:#a8bfd6;font-size:12px;max-width:540px;line-height:1.6;margin:0 0 17px}
+.pd-hero-actions{display:flex;gap:9px;flex-wrap:wrap}.pd-hero-btn{padding:10px 16px;border-radius:10px;font-size:11px;font-weight:900;background:linear-gradient(135deg,#00b7ff,#7c3cff 65%,#ff2bd6);color:#fff;border:1px solid #ffffff22;box-shadow:0 0 24px #7c3cff2e}.pd-hero-btn.alt{background:#061426dd;border-color:#1b5680}
+.pd-title{display:flex;align-items:end;justify-content:space-between;margin:18px 0 10px}.pd-title h3{margin:0;font-size:18px}.pd-title small{color:#00d9ff;font-size:10px}
+.pd-games{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}.pd-game{padding:12px;border:1px solid #1a527b;border-radius:14px;background:linear-gradient(145deg,#081a2de8,#050d18);min-width:0;transition:.2s;display:flex;flex-direction:column;min-height:168px}.pd-game:hover{transform:translateY(-3px);border-color:#00e5ff99;box-shadow:0 12px 35px #00e5ff14}.pd-game-icon{height:74px;border-radius:10px;display:grid;place-items:center;font-size:35px;background:radial-gradient(circle,#143a5d,#071321 72%);border:1px solid #ffffff0c;margin-bottom:9px}.pd-game h4{margin:0 0 4px;font-size:13px}.pd-game p{margin:0;color:#7894af;font-size:9px;line-height:1.4}.pd-game button{margin-top:auto;padding:8px;border-radius:8px;background:linear-gradient(135deg,#00b7ff,#7c3cff);color:#fff;font-size:10px;font-weight:900}
+.pd-right{display:grid;gap:12px;align-content:start}.pd-card{padding:14px}.pd-profile{display:flex;align-items:center;gap:10px}.pd-profile .pd-avatar{width:48px;height:48px}.pd-profile b{font-size:13px}.pd-profile small{display:block;color:#00d9ff;font-size:9px;margin-top:2px}.pd-xp{height:7px;border-radius:99px;background:#10233a;margin:12px 0 8px;overflow:hidden}.pd-xp span{display:block;width:62%;height:100%;background:linear-gradient(90deg,#00e5ff,#7c3cff,#ff2bd6);box-shadow:0 0 14px #00e5ff}
+.pd-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.pd-stat{padding:9px 4px;border:1px solid #183d5d;border-radius:9px;text-align:center;background:#061321}.pd-stat b{display:block;font-size:14px}.pd-stat small{color:#718ba5;font-size:8px}
+.pd-card h4{margin:0 0 10px;font-size:13px}.pd-badges{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.pd-badge{height:48px;border-radius:10px;border:1px solid #254d70;background:#071525;display:grid;place-items:center;font-size:22px}
+.pd-leader{display:grid;gap:7px}.pd-row{display:grid;grid-template-columns:22px 1fr auto;gap:7px;align-items:center;padding:7px;border-radius:8px;background:#061321;border:1px solid #12344f;font-size:9px}.pd-row:nth-child(3){border-color:#00e5ff55}.pd-rank{color:#00e5ff;font-weight:900}
+.pd-rooms{display:grid;gap:7px}.pd-room{display:flex;align-items:center;justify-content:space-between;padding:8px;border-radius:9px;background:#061321;border:1px solid #12344f;font-size:9px}.pd-room button{padding:5px 8px;border-radius:7px;background:#071d33;color:#00e5ff;border:1px solid #1b5680;font-size:8px}
+.pd-mobile-nav{display:none}
+@media(max-width:1100px){.pawan-dashboard{grid-template-columns:150px minmax(0,1fr)}.pd-right{display:none}.pd-games{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:760px){.pawan-dashboard{display:block;padding:12px 3% 24px}.pd-sidebar{display:none}.pd-topline{display:block}.pd-search{width:100%;max-width:none}.pd-user{margin-top:8px;width:max-content}.pd-hero{min-height:250px;padding:22px}.pd-games{grid-template-columns:repeat(2,minmax(0,1fr))}.pd-mobile-nav{display:flex;position:sticky;top:76px;z-index:8;gap:6px;overflow:auto;padding:8px 3%;background:#030712e8;border-bottom:1px solid #00e5ff1c;backdrop-filter:blur(16px)}.pd-mobile-nav button{flex:0 0 auto;padding:8px 11px;border-radius:9px;background:#061426;color:#a9c5df;border:1px solid #1b5680;font-size:9px;font-weight:800}.pd-mobile-nav button.active{color:#fff;background:linear-gradient(135deg,#00b7ff,#7c3cff)}}
+@media(max-width:430px){.pd-games{grid-template-columns:1fr 1fr;gap:8px}.pd-game{min-height:158px;padding:9px}.pd-game-icon{height:62px;font-size:29px}.pd-hero h2{font-size:26px}.pd-hero p{font-size:11px}.pd-hero-actions button{width:100%}}
+/* Keep the actual game panels full-screen and usable above the dashboard. */
+.chess-panel-full,.chess-mode-modal{z-index:2000!important}.panel.show{z-index:1900}
 </style></head>
 <body>
 <header class="nav">
@@ -80,8 +117,55 @@ html body:after{content:""!important;display:block!important;position:fixed!impo
 <div class="navright"><span>FREE TO PLAY</span><button class="loginBtn" onclick="showAuth('login')">Login</button><button class="signupBtn" onclick="showAuth('signup')">Sign Up</button><button class="menu" onclick="toggleMenu()">☰</button></div>
 </header>
 <main>
-<section class="hero"><div class="pill">🎮 PAWAN GAMES • FREE TO PLAY</div><h1>Play. Compete. <span class="gradient">Have Fun.</span></h1><p>Your gaming hub for quick matches, multiplayer rooms, profiles, achievements and more. Pick a game and start playing.</p><div class="actions"><button class="btn primary" onclick="openGame()">Play Tic-Tac-Toe</button><button class="btn secondary" onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">Explore Games</button></div></section>
-<section class="section" id="games"><h2>Games</h2><p class="sub">More games can be added as the platform grows.</p><div class="games">
+<section class="hero" style="display:none"><div class="pill">🎮 PAWAN GAMES • FREE TO PLAY</div><h1>Play. Compete. <span class="gradient">Have Fun.</span></h1><p>Your gaming hub for quick matches, multiplayer rooms, profiles, achievements and more. Pick a game and start playing.</p><div class="actions"><button class="btn primary" onclick="openGame()">Play Tic-Tac-Toe</button><button class="btn secondary" onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">Explore Games</button></div></section>
+<section class="pawan-dashboard" id="pawanDashboard">
+  <aside class="pd-sidebar">
+    <div class="pd-mini-brand"><div class="pd-mini-logo">🎮</div><div><b>PAWAN<br>GAMES</b><small>FREE TO PLAY</small></div></div>
+    <button class="pd-side-btn active" onclick="document.getElementById('pawanDashboard').scrollIntoView({behavior:'smooth'})">⌂ <span>Home</span></button>
+    <button class="pd-side-btn" onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">🎮 <span>Games</span></button>
+    <button class="pd-side-btn" onclick="document.getElementById('profile').scrollIntoView({behavior:'smooth'})">🏆 <span>Leaderboard</span></button>
+    <button class="pd-side-btn" onclick="document.getElementById('profile').scrollIntoView({behavior:'smooth'})">👥 <span>Friends</span></button>
+    <button class="pd-side-btn" onclick="comingSoon()">💬 <span>Chat</span></button>
+    <button class="pd-side-btn" onclick="document.getElementById('profile').scrollIntoView({behavior:'smooth'})">◉ <span>Profile</span></button>
+    <button class="pd-side-btn" onclick="comingSoon()">⚙ <span>Settings</span></button>
+    <div class="pd-upgrade"><div class="big">🎮</div><b>UPGRADE YOUR SKILLS</b><small>Play • Learn • Win</small></div>
+  </aside>
+
+  <div class="pd-main">
+    <div class="pd-topline">
+      <input class="pd-search" aria-label="Search games" placeholder="Search games, players, rooms..." onkeydown="if(event.key==='Enter')document.getElementById('games').scrollIntoView({behavior:'smooth'})">
+      <div class="pd-user"><div class="pd-avatar">👤</div><div><b>Pawan Raj</b><small>Level 1 • Free</small></div></div>
+    </div>
+    <div class="pd-mobile-nav">
+      <button class="active" onclick="document.getElementById('pawanDashboard').scrollIntoView({behavior:'smooth'})">⌂ Home</button>
+      <button onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">🎮 Games</button>
+      <button onclick="document.getElementById('profile').scrollIntoView({behavior:'smooth'})">🏆 Rank</button>
+      <button onclick="document.getElementById('profile').scrollIntoView({behavior:'smooth'})">👤 Profile</button>
+      <button onclick="comingSoon()">💬 Chat</button>
+    </div>
+    <div class="pd-hero">
+      <div class="pd-hero-content"><div class="pd-hero-kicker">PAWAN GAMES • PLAY TOGETHER</div><h2>Play together.<br><span class="gradient">Make your gaming world.</span></h2><p>Play Chess and Tic-Tac-Toe today. More free-to-play games are being added step by step.</p><div class="pd-hero-actions"><button class="pd-hero-btn" onclick="openChess()">♟ Start Playing</button><button class="pd-hero-btn alt" onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">Explore Games →</button></div></div>
+    </div>
+    <div class="pd-title"><h3>🔥 Popular Games</h3><small>View All →</small></div>
+    <div class="pd-games">
+      <article class="pd-game"><div class="pd-game-icon">♜♞</div><h4>Chess</h4><p>Think • Plan • Win</p><button onclick="openChess()">Play Now →</button></article>
+      <article class="pd-game"><div class="pd-game-icon">⭕❌</div><h4>Tic-Tac-Toe</h4><p>Quick • Classic • Multiplayer</p><button onclick="openGame()">Play Now →</button></article>
+      <article class="pd-game"><div class="pd-game-icon">🔴🟡</div><h4>Connect Four</h4><p>Strategy • Connect • Win</p><button onclick="comingSoon()">Coming Soon</button></article>
+      <article class="pd-game"><div class="pd-game-icon">🎯</div><h4>More Games</h4><p>Fun never ends</p><button onclick="document.getElementById('games').scrollIntoView({behavior:'smooth'})">Explore →</button></article>
+    </div>
+  </div>
+
+  <aside class="pd-right">
+    <div class="pd-card">
+      <div class="pd-profile"><div class="pd-avatar">👤</div><div><b>Pawan Raj</b><small>Level 1</small></div></div>
+      <div class="pd-xp"><span></span></div>
+      <div class="pd-stats"><div class="pd-stat"><b>0</b><small>Games</small></div><div class="pd-stat"><b>0</b><small>Wins</small></div><div class="pd-stat"><b>0</b><small>Friends</small></div></div>
+    </div>
+    <div class="pd-card"><h4>🏅 Achievements</h4><div class="pd-badges"><div class="pd-badge">⭐</div><div class="pd-badge">🏆</div><div class="pd-badge">💎</div><div class="pd-badge">⚡</div></div></div>
+    <div class="pd-card"><h4>🏆 Leaderboard</h4><div class="pd-leader"><div class="pd-row"><span class="pd-rank">1</span><span>Legend Gamer</span><b>—</b></div><div class="pd-row"><span class="pd-rank">2</span><span>Pawan Raj</span><b>0 XP</b></div><div class="pd-row"><span class="pd-rank">3</span><span>Game Master</span><b>—</b></div></div></div>
+    <div class="pd-card"><h4>🌐 Live Rooms</h4><div class="pd-rooms"><div class="pd-room"><span>Classic Room<br>Chess</span><button onclick="openChess()">Open</button></div><div class="pd-room"><span>Quick Play<br>Tic-Tac-Toe</span><button onclick="openGame()">Join</button></div></div></div>
+  </aside>
+</section><section class="section" id="games"><h2>Games</h2><p class="sub">More games can be added as the platform grows.</p><div class="games">
 <article class="game"><div class="gameicon">⭕❌</div><span class="tag">LIVE • MULTIPLAYER</span><h3>Tic-Tac-Toe</h3><p>Fast 3×3 strategy. Create a room and play with another player online.</p><button class="play" onclick="openGame()">Play now</button></article>
 <article class="game"><div class="gameicon">🔴🟡</div><span class="tag">COMING SOON</span><h3>Connect Four</h3><p>Drop discs, connect four and outplay your opponent.</p><button class="play" onclick="comingSoon()">Coming soon</button></article>
 <article class="game"><div class="gameicon">✊✋✌️</div><span class="tag">COMING SOON</span><h3>Rock Paper Scissors</h3><p>A quick classic for short competitive matches.</p><button class="play" onclick="comingSoon()">Coming soon</button></article>
@@ -258,4 +342,4 @@ function renderChessInfo(){const status=document.getElementById('chessStatus'),t
 function renderChessMoves(){const list=document.getElementById('moveList'),hist=chessGame.history();if(!hist.length){list.innerHTML='<span class="empty-moves">No moves yet</span>';return}let out='';for(let i=0;i<hist.length;i+=2)out+='<div class="move-row"><span>'+(i/2+1)+'.</span><span>'+hist[i]+'</span><span>'+ (hist[i+1]||'')+'</span></div>';list.innerHTML=out;list.scrollTop=list.scrollHeight}
 function renderChessCaptured(){document.getElementById('whiteCaptured').textContent=chessCaptured.w.map(x=>pieceGlyph.b[x]||'').join('');document.getElementById('blackCapturedBottom').textContent=chessCaptured.b.map(x=>pieceGlyph.w[x]||'').join('');document.getElementById('blackCaptured').textContent=chessCaptured.b.map(x=>pieceGlyph.w[x]||'').join('')}
 function playChessSound(){try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=520;g.gain.value=.035;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.06)}catch(_){}}
-</script></body></html>
+</script><script>document.title="Pawan Games | Futuristic Free-to-Play Gaming";</script></body></html>
