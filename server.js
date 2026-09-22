@@ -48,6 +48,7 @@ wss.on('connection',ws=>{
   }
   if(!room||!symbol)return send(ws,{type:'error',message:'Create or join a room first'});
   if(room.kind==='ludo'){
+   if(m.type==='rematch'){room.tokens={red:[-1,-1,-1,-1],green:[-1,-1,-1,-1],yellow:[-1,-1,-1,-1],blue:[-1,-1,-1,-1]};room.turn='red';room.dice=null;room.sixStreak=0;room.winner=null;room.status=room.players.size>=2?'playing':'waiting';broadcastState(room);return}
    if(m.type==='chat'){
     const text=String(m.text||'').trim().slice(0,180);if(text)broadcast(room,{type:'chat',color:symbol,name:room.players.get(symbol)?.name||'Player',text,at:Date.now()});return
    }
