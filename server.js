@@ -11,7 +11,9 @@ function state(room){
 }
 function ludoStart(color){return {red:0,green:13,yellow:26,blue:39}[color]}
 function ludoGlobal(color,pos){return pos<0||pos>51?null:(ludoStart(color)+pos)%52}
-function ludoLegal(tokens,color,dice){const out=[];for(let i=0;i<4;i++){const p=tokens[color][i];if(p<0&&dice===6)out.push(i);else if(p>=0&&p+dice<=56)out.push(i)}return out}
+function ludoBlockades(tokens){const map=new Map();for(const c of ['red','green','yellow','blue'])for(const p of tokens[c]){if(p>=0&&p<52){const g=ludoGlobal(c,p);const key=String(g);const x=map.get(key)||[];x.push(c);map.set(key,x)}}return map}
+function ludoPathClear(tokens,color,from,dice){const blocks=ludoBlockades(tokens);for(let step=1;step<=dice;step++){const p=from<0?step-1:from+step;if(p>51)break;const g=ludoGlobal(color,p);const owners=blocks.get(String(g))||[];const counts={};owners.forEach(x=>counts[x]=(counts[x]||0)+1);const enemy=Object.keys(counts).some(x=>x!==color&&counts[x]>=2);if(enemy)return false}return true}
+function ludoLegal(tokens,color,dice){const out=[];for(let i=0;i<4;i++){const p=tokens[color][i];if(p<0&&dice===6){const g=ludoGlobal(color,0);const blocks=ludoBlockades(tokens).get(String(g))||[];if(!blocks.some(x=>x!==color&&blocks.filter(y=>y===x).length>=2))out.push(i)}else if(p>=0&&p+dice<=56&&ludoPathClear(tokens,color,p,dice)){const target=p+dice<52?ludoGlobal(color,p+dice):null;const owners=target===null?[]:(ludoBlockades(tokens).get(String(target))||[]);const enemyCount=owners.filter(x=>x!==color).length;if(enemyCount<2)out.push(i)}}return out}
 function ludoSafe(g){return [0,8,13,21,26,34,39,47].includes(g)}
 function ludoNextPlayer(room,color){const order=['red','green','yellow','blue'];let n=order.indexOf(color);for(let k=0;k<4;k++){n=(n+1)%4;if(room.players.has(order[n]))return order[n]}return color}
 function send(ws,data){if(ws&&ws.readyState===1)ws.send(JSON.stringify(data))}
@@ -63,9 +65,10 @@ wss.on('connection',ws=>{
     const newPos=oldPos<0?0:oldPos+dice;if(newPos>56)return send(ws,{type:'move_rejected',message:'Exact roll required to reach home.'});room.tokens[symbol][i]=newPos;
     if(newPos>=56)room.tokens[symbol][i]=56;
     const g=ludoGlobal(symbol,room.tokens[symbol][i]);
-    if(g!==null){for(const c of ['red','green','yellow','blue']){if(c===symbol)continue;for(let j=0;j<4;j++){const op=room.tokens[c][j];if(op>=0&&op<52&&ludoGlobal(c,op)===g&&!ludoSafe(g))room.tokens[c][j]=-1}}}
+    let captured=false;if(g!==null){for(const c of ['red','green','yellow','blue']){if(c===symbol)continue;for(let j=0;j<4;j++){const op=room.tokens[c][j];if(op>=0&&op<52&&ludoGlobal(c,op)===g&&!ludoSafe(g)){room.tokens[c][j]=-1;captured=true}}}}
+    const reachedHome=newPos===56;
     if(room.tokens[symbol].every(p=>p===56)){room.status='finished';room.winner=symbol;room.dice=null;broadcastState(room);return}
-    const keep=dice===6;room.dice=null;if(!keep){room.sixStreak=0;const order=['red','green','yellow','blue'];let n=order.indexOf(symbol);for(let k=0;k<4;k++){n=(n+1)%4;if(room.players.has(order[n])){room.turn=order[n];break}}}
+    const keep=dice===6||captured||reachedHome;room.dice=null;if(!keep){room.sixStreak=0;const order=['red','green','yellow','blue'];let n=order.indexOf(symbol);for(let k=0;k<4;k++){n=(n+1)%4;if(room.players.has(order[n])){room.turn=order[n];break}}}
     broadcastState(room);return
    }
    return
