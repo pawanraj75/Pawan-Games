@@ -11,7 +11,9 @@ function state(room){
 }
 function ludoStart(color){return {red:0,green:13,yellow:26,blue:39}[color]}
 function ludoGlobal(color,pos){return pos<0||pos>51?null:(ludoStart(color)+pos)%52}
-function ludoLegal(tokens,color,dice){return tokens[color].map((p,i)=>(p<0?(dice===6):(p+dice<=56))).map((ok,i)=>ok?i:-1).filter(i=>i>=0)}
+function ludoLegal(tokens,color,dice){const out=[];for(let i=0;i<4;i++){const p=tokens[color][i];if(p<0&&dice===6)out.push(i);else if(p>=0&&p+dice<=56)out.push(i)}return out}
+function ludoSafe(g){return [0,8,13,21,26,34,39,47].includes(g)}
+function ludoNextPlayer(room,color){const order=['red','green','yellow','blue'];let n=order.indexOf(color);for(let k=0;k<4;k++){n=(n+1)%4;if(room.players.has(order[n]))return order[n]}return color}
 function send(ws,data){if(ws&&ws.readyState===1)ws.send(JSON.stringify(data))}
 function broadcast(room,data){for(const p of room.players.values())send(p.ws,data)}
 function checkWinner(b){const w=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];for(const a of w)if(a.every(i=>b[i]))return b[a[0]];return b.every(Boolean)?'DRAW':null}
@@ -25,7 +27,7 @@ wss.on('connection',ws=>{
  ws.on('message',raw=>{
   let m;try{m=JSON.parse(raw.toString())}catch{return send(ws,{type:'error',message:'Invalid message'})}
   if(m.type==='create_ludo_room'){
-   const id=newRoomId();room={id,kind:'ludo',turn:'red',dice:null,status:'waiting',winner:null,tokens:{red:[-1,-1,-1,-1],green:[-1,-1,-1,-1],yellow:[-1,-1,-1,-1],blue:[-1,-1,-1,-1]},players:new Map()};
+   const id=newRoomId();room={id,kind:'ludo',turn:'red',dice:null,status:'waiting',winner:null,sixStreak:0,rules:{exactHome:true,sixExtraTurn:true,captureExtraTurn:true,safeSquares:true,threeSixPenalty:true},tokens:{red:[-1,-1,-1,-1],green:[-1,-1,-1,-1],yellow:[-1,-1,-1,-1],blue:[-1,-1,-1,-1]},players:new Map()};
    rooms.set(id,room);symbol='red';room.players.set('red',{color:'red',name:String(m.name||'Player 1').slice(0,18),ws});send(ws,{type:'ludo_room_created',color:'red',state:state(room)});broadcastState(room);return
   }
   if(m.type==='join_ludo_room'){
@@ -49,7 +51,7 @@ wss.on('connection',ws=>{
    }
    if(m.type==='roll_dice'){
     if(room.status!=='playing'||room.turn!==symbol||room.dice!==null)return;
-    room.dice=1+Math.floor(Math.random()*6);const legal=ludoLegal(room.tokens,symbol,room.dice);
+    room.dice=1+Math.floor(Math.random()*6);room.sixStreak=room.dice===6?room.sixStreak+1:0;if(room.sixStreak>=3){room.dice=null;room.sixStreak=0;room.turn=ludoNextPlayer(room,symbol);broadcastState(room);return}const legal=ludoLegal(room.tokens,symbol,room.dice);
     broadcastState(room);
     if(!legal.length){const rolled=room.dice;setTimeout(()=>{if(room&&room.kind==='ludo'&&room.dice===rolled){room.dice=null;const order=['red','green','yellow','blue'];let n=order.indexOf(room.turn);do{n=(n+1)%4}while(!room.players.has(order[n])&&order.some(c=>room.players.has(c)));room.turn=order[n];broadcastState(room)}},650)}
     return
@@ -58,12 +60,12 @@ wss.on('connection',ws=>{
     if(room.status!=='playing'||room.turn!==symbol||room.dice===null)return;
     const i=Number(m.index),dice=room.dice;if(!Number.isInteger(i)||i<0||i>3)return;
     const oldPos=room.tokens[symbol][i];const legal=ludoLegal(room.tokens,symbol,dice);if(!legal.includes(i))return send(ws,{type:'move_rejected',message:'That token cannot move.'});
-    const newPos=oldPos<0?0:oldPos+dice;room.tokens[symbol][i]=newPos;
+    const newPos=oldPos<0?0:oldPos+dice;if(newPos>56)return send(ws,{type:'move_rejected',message:'Exact roll required to reach home.'});room.tokens[symbol][i]=newPos;
     if(newPos>=56)room.tokens[symbol][i]=56;
     const g=ludoGlobal(symbol,room.tokens[symbol][i]);
-    if(g!==null){for(const c of ['red','green','yellow','blue']){if(c===symbol)continue;for(let j=0;j<4;j++){const op=room.tokens[c][j];if(op>=0&&op<52&&ludoGlobal(c,op)===g&&![0,8,13,21,26,34,39,47].includes(g))room.tokens[c][j]=-1}}}
+    if(g!==null){for(const c of ['red','green','yellow','blue']){if(c===symbol)continue;for(let j=0;j<4;j++){const op=room.tokens[c][j];if(op>=0&&op<52&&ludoGlobal(c,op)===g&&!ludoSafe(g))room.tokens[c][j]=-1}}}
     if(room.tokens[symbol].every(p=>p===56)){room.status='finished';room.winner=symbol;room.dice=null;broadcastState(room);return}
-    const keep=dice===6;room.dice=null;if(!keep){const order=['red','green','yellow','blue'];let n=order.indexOf(symbol);for(let k=0;k<4;k++){n=(n+1)%4;if(room.players.has(order[n])){room.turn=order[n];break}}}
+    const keep=dice===6;room.dice=null;if(!keep){room.sixStreak=0;const order=['red','green','yellow','blue'];let n=order.indexOf(symbol);for(let k=0;k<4;k++){n=(n+1)%4;if(room.players.has(order[n])){room.turn=order[n];break}}}
     broadcastState(room);return
    }
    return
